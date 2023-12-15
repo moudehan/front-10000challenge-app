@@ -6,10 +6,8 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 11,
-    sourceType: "module",
   },
   rules: {
-    "no-unused-vars": "warn",
+    // Ajoutez des règles personnalisées ici si nécessaire
   },
 };
