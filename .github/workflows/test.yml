@@ -10,40 +10,30 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: "14"
-
       - name: Install dependencies
         run: npm install
-
       - name: Build project
         run: npm run build
 
- test:
-  name: Test
-  needs: build
-  runs-on: ubuntu-latest
-  
-  steps:
-  - uses: actions/checkout@v2
-  
-  - name: Set up Node.js
-    uses: actions/setup-node@v1
-    with:
-      node-version: '14'
-      
-  - name: Install dependencies
-    run: npm install
-    
-  - name: Lint code
-    run: npx eslint . --ext .js,.jsx,.ts,.tsx
-    
-  - name: Run tests
-    run: npm test
-
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14"
+      - name: Install dependencies
+        run: npm install
+      - name: Lint code
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx
+      - name: Run tests
+        run: npm test
