@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProfilPage from "./components/ProfilPage";
-import WelcomePage from "./.github/workflows/components/Welcome";
+import LoadingPage from "./components/LoadinPage";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -14,6 +14,10 @@ export default function App() {
 
   return (
     <>
+      {loading ? <LoadingPage /> : <LoginPage />}
+      {/* <WelcomePage /> */}
+      {/* <AproposPage></AproposPage> */}
+      {/* <ActualitePage></ActualitePage> */}
       <ProfilPage></ProfilPage>
     </>
   );
