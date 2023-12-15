@@ -1,7 +1,15 @@
 module.exports = {
-  rules: {
-    "no-unused-vars": "error",
-    "import/no-unused-modules": [2, { unusedExports: true }],
+  root: true,
+  extends: "@react-native-community",
+  parser: "@babel/eslint-parser",
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 11,
+    sourceType: "module",
   },
-  plugins: ["import"],
+  rules: {
+    "no-unused-vars": "warn",
+  },
 };
