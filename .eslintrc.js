@@ -7,7 +7,5 @@ module.exports = {
       jsx: true,
     },
   },
-  rules: {
-    // Ajoutez des règles personnalisées ici si nécessaire
-  },
+  rules: {},
 };
