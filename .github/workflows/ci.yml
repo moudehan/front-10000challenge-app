@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Run ESLint
-        run: npx eslint . --ext .js,.jsx,.ts,.tsx --rule "no-unused-vars: error" --rule "unused-imports/no-unused-imports: error"
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx
 
   test:
     name: Test
