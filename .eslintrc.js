@@ -7,5 +7,9 @@ module.exports = {
       jsx: true,
     },
   },
-  rules: {},
+  plugins: ["unused-imports"],
+  rules: {
+    "no-unused-vars": "error",
+    "unused-imports/no-unused-imports": "error",
+  },
 };

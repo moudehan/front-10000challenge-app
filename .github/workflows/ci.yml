@@ -12,26 +12,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "14"
+
       - name: Install dependencies
         run: npm install
+
       - name: Run ESLint
-        run: npx eslint . --ext .js,.jsx,.ts,.tsx
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx --rule "no-unused-vars: error" --rule "unused-imports/no-unused-imports: error"
 
   test:
-    name: Run Tests
+    name: Test
     needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "14"
+
       - name: Install dependencies
         run: npm install
+
       - name: Run tests
         run: npm test
