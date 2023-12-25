@@ -1,4 +1,4 @@
-import React, { cloneElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, SafeAreaView } from "react-native";
 import { CircularProgress } from "react-native-circular-progress";
 import TabBar from "./navDrawer/TabBar";

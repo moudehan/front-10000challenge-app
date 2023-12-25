@@ -24,6 +24,15 @@ jobs:
       - name: Run ESLint
         run: npx eslint . --ext .js,.jsx,.ts,.tsx
 
+      - name: Detect console.logs
+        run: |
+          if grep -rnw './src' -e 'console.log'; then
+            echo "Erreur: console.log trouvé"
+            exit 1
+          else
+            echo "Aucun console.log détecté"
+          fi
+
   test:
     name: Test
     needs: lint
@@ -41,12 +50,3 @@ jobs:
 
       - name: Run tests
         run: npm test
-
-      - name: Detect console.logs
-        run: |
-          if grep -rnw './src' -e 'console.log'; then
-            echo "Erreur: console.log trouvé"
-            exit 1
-          else
-            echo "Aucun console.log détecté"
-          fi
