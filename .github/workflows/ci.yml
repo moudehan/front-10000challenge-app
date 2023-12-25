@@ -23,8 +23,8 @@ jobs:
       - name: Check for console.log
         run: |
           echo "Checking for console.log statements..."
-          ls -la ./src
-          if grep -r "console.log" ./src; then
+          ls -la ./components
+          if grep -r "console.log" ./componenets; then
             echo "::error::console.log found"
             exit 1
           fi
