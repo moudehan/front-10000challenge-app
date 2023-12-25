@@ -12,7 +12,7 @@ const Test = () => {
   const [inputValue, setInputValue] = useState("");
 
   const handleButtonPress = () => {
-    console.log("Input Value:", inputValue);
+    "";
   };
   return (
     <View style={styles.container}>

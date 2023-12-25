@@ -40,7 +40,7 @@ const TabBar = ({ activeTab, setActiveTab, navigation }) => {
     setActiveTab(tab.name);
     navigation.navigate(tab.screen);
   };
-  console.log(activeTab, setActiveTab);
+
   return (
     <View style={styles.tabBar}>
       {tabIcons.map((tab, index) => (

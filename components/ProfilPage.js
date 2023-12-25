@@ -60,11 +60,7 @@ export default function ProfilPage({ navigation }) {
       </View>
 
       <View style={styles.lowerSection}>
-        <MenuItem
-          iconName="person"
-          text="Mon Compte"
-          onPress={() => console.log("Navigate to Account")}
-        />
+        <MenuItem iconName="person" text="Mon Compte" onPress={() => ""} />
         <MenuItem
           iconName="medal-outline"
           text="Mes Badges"

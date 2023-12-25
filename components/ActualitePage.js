@@ -5,7 +5,7 @@ import NavBar from "./navDrawer/NavBar";
 
 export default function ActualitePage({ navigation }) {
   const [activeTab, setActiveTab] = useState("news");
-  console.log("actualite", activeTab);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       setActiveTab("news");

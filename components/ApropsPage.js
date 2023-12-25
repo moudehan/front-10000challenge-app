@@ -6,18 +6,10 @@ import NavBar from "./navDrawer/NavBar";
 export default function AproposPage() {
   const [activeTab, setActiveTab] = useState("home");
 
-  const handleBackPress = () => console.log("Back button pressed");
-  const handleSettingsPress = () => console.log("Settings button pressed");
-
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* NavBar */}
-      <NavBar
-        handleBackPress={handleBackPress}
-        handleSettingsPress={handleSettingsPress}
-        paramIcon={false}
-        title="A propos"
-      />
+      <NavBar paramIcon={false} title="A propos" />
 
       {/* TabBar */}
       <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
