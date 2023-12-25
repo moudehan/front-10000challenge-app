@@ -24,14 +24,12 @@ jobs:
       - name: Run ESLint
         run: npx eslint . --ext .js,.jsx,.ts,.tsx
 
-      - name: Detect console.logs
+       - name: Check for console.log
         run: |
-          if grep -rnw './src' -e 'console.log'; then
-            echo "Erreur: console.log trouvé"
+          if (Get-ChildItem -Recurse ./src -Filter *.js | Select-String "console.log" | Select Path, LineNumber, Line) {
+            echo "::error::console.log found"
             exit 1
-          else
-            echo "Aucun console.log détecté"
-          fi
+          }
 
   test:
     name: Test
