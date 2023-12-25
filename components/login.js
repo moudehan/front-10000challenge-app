@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -8,34 +8,90 @@ import {
   Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import usersData from "./users.json";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const LoginPage = () => {
+const schema = yup.object().shape({
+  email: yup.string().required("Email requis").email("Email invalide"),
+});
+
+const LoginPage = ({ navigation }) => {
+  const [customError, setCustomError] = useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const handleLogin = async (data) => {
+    const user = usersData.find((user) => user.email === data.email);
+    if (user) {
+      await AsyncStorage.setItem("userId", user.id.toString());
+      navigation.navigate("home");
+    } else {
+      setCustomError("Utilisateur non trouvé");
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      reset({ email: "" }); // Réinitialiser le champ email
+    });
+
+    return unsubscribe;
+  }, [navigation, reset]);
   return (
     <View style={styles.screen}>
       <View style={styles.card}>
         <Image source={require("./../assets/step1.png")} style={styles.logo} />
         <Text style={styles.title}>StepCHU</Text>
-        <View style={styles.inputContainer}>
+
+        <View
+          style={[
+            styles.inputContainer,
+            (errors.email || customError) && styles.errorBorder,
+          ]}
+        >
           <Icon
             name="mail-outline"
             size={20}
             color="#B0E0E6"
             style={styles.mailIcon}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="cesi@chu-rouen.fr"
-            placeholderTextColor="#B0E0E6"
-            keyboardType="email-address"
-          />
-          <Icon
-            name="checkmark-circle"
-            size={20}
-            color="#B0E0E6"
-            style={styles.validationIcon}
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={(text) => {
+                  onChange(text);
+                  setCustomError(""); // Réinitialiser le message d'erreur personnalisé
+                }}
+                value={value}
+                placeholder="cesi@chu-rouen.fr"
+                placeholderTextColor="#B0E0E6"
+              />
+            )}
+            name="email"
+            defaultValue=""
           />
         </View>
-        <TouchableOpacity style={styles.button}>
+        {errors.email && (
+          <Text style={styles.errorText}>{errors.email.message}</Text>
+        )}
+        {customError && <Text style={styles.errorText}>{customError}</Text>}
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleSubmit(handleLogin)}
+        >
           <Text style={styles.buttonText}>Se Connecter</Text>
         </TouchableOpacity>
       </View>
@@ -87,7 +143,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 1,
     borderColor: "#B0E0E6",
-    marginBottom: 20,
+    marginBottom: 5,
   },
   input: {
     flex: 1,
@@ -117,10 +173,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  errorBorder: {
+    borderColor: "red",
+  },
   errorText: {
     fontSize: 14,
     color: "red",
-    marginTop: 5,
   },
 });
 

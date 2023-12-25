@@ -1,22 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const TabBar = ({ activeTab, setActiveTab }) => {
+const TabBar = ({ activeTab, setActiveTab, navigation }) => {
   const tabIcons = [
-    { name: "news", label: "Actualités", icon: "globe-outline" },
-    { name: "challenges", label: "Challenges", icon: "medal-outline" },
-    { name: "home", label: "Accueil", icon: "home-outline" },
-    { name: "quiz", label: "Quiz", icon: "school-outline" },
-    { name: "profile", label: "Profil", icon: "person-circle-outline" },
+    {
+      name: "news",
+      label: "Actualités",
+      icon: "globe-outline",
+      screen: "Actualites",
+    },
+    {
+      name: "challenges",
+      label: "Challenges",
+      icon: "medal-outline",
+      screen: "ChallengesScreen",
+    },
+    {
+      name: "home",
+      label: "Accueil",
+      icon: "home-outline",
+      screen: "home",
+    },
+    {
+      name: "quiz",
+      label: "Quiz",
+      icon: "school-outline",
+      screen: "QuizScreen",
+    },
+    {
+      name: "profil",
+      label: "Profil",
+      icon: "person-circle-outline",
+      screen: "Profil",
+    },
   ];
 
+  const handleTabPress = (tab) => {
+    setActiveTab(tab.name);
+    navigation.navigate(tab.screen);
+  };
+  console.log(activeTab, setActiveTab);
   return (
     <View style={styles.tabBar}>
       {tabIcons.map((tab, index) => (
         <View key={index} style={styles.tabItemContainer}>
           <TouchableOpacity
-            onPress={() => setActiveTab(tab.name)}
+            onPress={() => handleTabPress(tab)}
             style={[
               styles.tabItem,
               activeTab === tab.name ? styles.activeTabItem : null,

@@ -1,26 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
 import TabBar from "./navDrawer/TabBar";
 import NavBar from "./navDrawer/NavBar";
 
-export default function ActualitePage() {
+export default function ActualitePage({ navigation }) {
   const [activeTab, setActiveTab] = useState("news");
+  console.log("actualite", activeTab);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setActiveTab("news");
+    });
 
-  const handleBackPress = () => console.log("Back button pressed");
-  const handleSettingsPress = () => console.log("Settings button pressed");
-
+    return unsubscribe;
+  }, [navigation]);
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* NavBar */}
-      <NavBar
-        handleBackPress={handleBackPress}
-        handleSettingsPress={handleSettingsPress}
-        paramIcon={false}
-        title="Actualités"
-      />
+      <NavBar paramIcon={false} title="Actualités" navigation={navigation} />
 
       {/* TabBar */}
-      <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <TabBar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        navigation={navigation}
+      />
     </SafeAreaView>
   );
 }

@@ -1,25 +1,47 @@
-import React, { useState } from "react";
+import React, { cloneElement, useEffect, useState } from "react";
 import { StyleSheet, View, Text, SafeAreaView } from "react-native";
 import { CircularProgress } from "react-native-circular-progress";
 import TabBar from "./navDrawer/TabBar";
 import NavBar from "./navDrawer/NavBar";
+import usersData from "./users.json";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function WelcomePage() {
-  const currentSteps = 2500;
-  const goalSteps = 10000;
+export default function WelcomePage({
+  navigation,
+  // route
+}) {
+  // const userId = route.params?.userId;
+  const goalSteps = 100000;
   const [activeTab, setActiveTab] = useState("home");
+  const [currentSteps, setCurrentSteps] = useState(0);
 
-  const handleBackPress = () => console.log("Back button pressed");
-  const handleSettingsPress = () => console.log("Settings button pressed");
+  useEffect(() => {
+    const getUserId = async () => {
+      const userId = await AsyncStorage.getItem("userId");
+      if (userId) {
+        const user = usersData.find((u) => u.id.toString() === userId);
+        if (user) {
+          setCurrentSteps(user.steps);
+        }
+      }
+    };
+
+    getUserId();
+
+    const unsubscribe = navigation.addListener("focus", () => {
+      setActiveTab("home");
+    });
+
+    return unsubscribe;
+  }, [
+    navigation,
+    // ,userId
+  ]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* NavBar */}
-      <NavBar
-        handleBackPress={handleBackPress}
-        handleSettingsPress={handleSettingsPress}
-      />
-
+      <NavBar paramIcon={true} title="StepCHU" navigation={navigation} />
       {/* Contenu principal */}
       <View style={styles.container}>
         <View style={styles.circleContainer}>
@@ -40,9 +62,12 @@ export default function WelcomePage() {
         </View>
         <Text style={styles.titleBelowCircle}>Historique</Text>
       </View>
-
       {/* TabBar */}
-      <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <TabBar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        navigation={navigation}
+      />
     </SafeAreaView>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -9,35 +9,90 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import TabBar from "./navDrawer/TabBar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import usersData from "./users.json";
+import LoadingPage from "./LoadinPage";
 
-const ProfilPage = () => {
-  const [activeTab, setActiveTab] = useState("profile");
+export default function ProfilPage({ navigation }) {
+  const [activeTab, setActiveTab] = useState("profil");
+  const [userData, setUserData] = useState({ username: "", email: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = await AsyncStorage.getItem("userId");
+      const user = usersData.find((u) => u.id.toString() === userId);
+      if (user) {
+        setUserData({ username: user.username, email: user.email });
+      }
+    };
+
+    fetchUserData();
+
+    const unsubscribe = navigation.addListener("focus", () => {
+      setActiveTab("profil");
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const handleLogout = async () => {
+    setIsLoading(true);
+    await AsyncStorage.removeItem("userId");
+    setTimeout(() => {
+      setIsLoading(false);
+      navigation.navigate("/");
+    }, 2000);
+  };
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.upperSection}>
         <Icon name="pencil" size={24} color="white" style={styles.editIcon} />
         <View style={styles.profileSection}>
           <Image style={styles.profilePic} />
-          <Text style={styles.profileName}>Louis Chaudrois</Text>
-          <Text style={styles.profileEmail}>louis.chaudrois@chu-rouen.fr</Text>
+          <Text style={styles.profileName}>{userData.username}</Text>
+          <Text style={styles.profileEmail}>{userData.email}</Text>
         </View>
       </View>
 
       <View style={styles.lowerSection}>
-        <MenuItem iconName="person" text="Mon Compte" />
-        <MenuItem iconName="medal-outline" text="Mes Badges" />
+        <MenuItem
+          iconName="person"
+          text="Mon Compte"
+          onPress={() => console.log("Navigate to Account")}
+        />
+        <MenuItem
+          iconName="medal-outline"
+          text="Mes Badges"
+          onPress={() => navigation.navigate("Badges")}
+        />
       </View>
+
       <View style={styles.lowerSection2}>
-        <MenuItem iconName="log-out-outline" text="Déconnexion" isLastItem />
+        <MenuItem
+          iconName="log-out-outline"
+          text="Déconnexion"
+          onPress={handleLogout}
+          isLastItem
+        />
       </View>
-      <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+
+      <TabBar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        navigation={navigation}
+      />
     </SafeAreaView>
   );
-};
+}
 
-const MenuItem = ({ iconName, text, isLastItem }) => (
+const MenuItem = ({ iconName, text, isLastItem, onPress }) => (
   <TouchableOpacity
+    onPress={onPress}
     style={[styles.menuItem, isLastItem && styles.lastMenuItem]}
   >
     <Icon name={iconName} size={24} color="#E26C61" />
@@ -88,18 +143,15 @@ const styles = StyleSheet.create({
   lowerSection: {
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
-    marginHorizontal: 16,
-    // marginHorizontal: 40,
+    marginHorizontal: 40,
     paddingHorizontal: 24,
   },
   lowerSection2: {
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
-    marginTop: -20,
-    // marginHorizontal: 16,
-    paddingVertical: 0,
     marginHorizontal: 40,
-    // marginTop: 20,
+    paddingVertical: 0,
+    marginTop: 20,
     paddingHorizontal: 24,
   },
   menuItem: {
@@ -119,5 +171,3 @@ const styles = StyleSheet.create({
     color: "#001F1C",
   },
 });
-
-export default ProfilPage;

@@ -1,0 +1,8 @@
+[
+  { "id": 1, "points": 5000, "color": "skyblue" },
+  { "id": 2, "points": 10000, "color": "green" },
+  { "id": 3, "points": 20000, "color": "gold" },
+  { "id": 4, "points": 30000, "color": "red" },
+  { "id": 5, "points": 40000, "color": "pink" },
+  { "id": 6, "points": 50000, "color": "purple" }
+]

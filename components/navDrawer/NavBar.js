@@ -2,20 +2,20 @@ import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const NavBar = ({ handleBackPress, handleSettingsPress, paramIcon, title }) => {
+const NavBar = ({ paramIcon, title, navigation }) => {
   return (
     <View style={styles.navBar}>
-      <TouchableOpacity onPress={handleBackPress} style={styles.iconButton}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.iconButton}
+      >
         <View style={styles.iconCircle}>
           <Icon name="chevron-back" size={18} color="#DADDDD" />
         </View>
       </TouchableOpacity>
       <Text style={styles.navBarTitle}> {title ? title : "StepCHU"}</Text>
       {paramIcon !== false ? (
-        <TouchableOpacity
-          onPress={handleSettingsPress}
-          style={styles.iconButton}
-        >
+        <TouchableOpacity style={styles.iconButton}>
           <View style={styles.iconCircle}>
             <Icon name="settings-outline" size={18} color="#DADDDD" />
           </View>
