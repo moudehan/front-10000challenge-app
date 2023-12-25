@@ -24,12 +24,13 @@ jobs:
       - name: Run ESLint
         run: npx eslint . --ext .js,.jsx,.ts,.tsx
 
-       - name: Check for console.log
+      - name: Check for console.log
         run: |
           if (Get-ChildItem -Recurse ./src -Filter *.js | Select-String "console.log" | Select Path, LineNumber, Line) {
             echo "::error::console.log found"
             exit 1
           }
+        shell: pwsh
 
   test:
     name: Test
