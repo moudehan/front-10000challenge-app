@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "Checking for console.log statements..."
           ls -la ./components
-          if grep -r "console.log" ./componenets; then
+          if grep -r "console.log" ./components; then
             echo "::error::console.log found"
             exit 1
           fi
